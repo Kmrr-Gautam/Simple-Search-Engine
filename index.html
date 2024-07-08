@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendly Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffcccc, #cc99ff, #99ccff, #66cc99, #ffcc99);
+            animation: gradient-animation 10s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .logo {
+            width: 120px; 
+            height: auto; 
+            margin-top: 20px; 
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .searchBox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: #2f3640;
+            border-radius: 50px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .searchInput {
+            border: none;
+            background: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            max-width: 200px;
+            padding: 12px 16px;
+            border-radius: 50px;
+        }
+
+        .searchButton {
+            color: white;
+            background: linear-gradient(90deg, #2AF598 0%, #009EFD 100%);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .searchButton svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .searchButton:hover {
+            background-color: #1A1A1A;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .dropbtn {
+            background-color: #2f3640;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropbtn:hover {
+            background-color: #1A1A1A;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            padding: 8px 0;
+            overflow: hidden;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .dropdown-content.show {
+            display: block;
+            transform: scaleY(1);
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .note, .disclaimer {
+            margin-top: 10px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .disclaimer {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-media-icons a {
+            color: #666;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .social-media-icons a img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-media-icons a:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <img src="vecteezy_illustration-of-cute-cat-drawing-in-gray-color-wpap-pop_17053195.png" alt="Logo" class="logo">
+
+    <div class="container">
+        <h1>Friendly Search</h1>
+        
+        <div class="searchBox">
+            <input class="searchInput" type="text" placeholder="Enter search term" id="searchBox" onkeydown="handleKeyDown(event)">
+            <button class="searchButton" onclick="searchAndRedirect()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"/></g></svg>
+            </button>
+        </div>
+        
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown()">Select Search Option</button>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="#" onclick="selectOption('Song')">Song</a>
+                <a href="#" onclick="selectOption('Information')">Information</a>
+                <a href="#" onclick="selectOption('Movie')">Movie</a>
+                <a href="#" onclick="selectOption('Lifestyle')">Lifestyle</a>
+                <a href="#" onclick="selectOption('News')">News</a>
+                <a href="#" onclick="selectOption('Sports')">Sports</a>
+            </div>
+        </div>
+
+        <div class="note">
+            Select search option to visit your desired Result
+        </div>
+
+        <div class="disclaimer">
+            This search engine is a demo and it might be incorrect sometimes. While searching, use correct spelling for accurate results.
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-media-icons">
+            <a href="mailto:gautamkrmd3525@gmail.com"><img src="gmail.png" alt="Gmail"></a>
+            <a href="https://www.instagram.com/kmrr.gautam"><img src="instagram.png" alt="Instagram"></a>
+            <a href="//www.linkedin.com/in/kmrr-gautam"><img src="linkedin.png" alt="LinkedIn"></a>
+        </div>
+        <div class="developed-by">
+            Developed by Gautam Kumar
+        </div>
+    </footer>
+
+    <script>
+        function searchAndRedirect() {
+            const searchQuery = document.getElementById('searchBox').value.trim();
+            
+            if (searchQuery === '') {
+                alert('Please enter a search term!');
+                return;
+            }
+
+            let searchOption = document.querySelector('.dropbtn').textContent.trim();
+
+            if (searchOption === 'Select Search Option') {
+                alert('Select search option first.');
+                return;
+            }
+
+            let searchUrl;
+            switch (searchOption) {
+                case 'Song':
+                    searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
+                    break;
+                case 'Information':
+                    searchUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(searchQuery)}`;
+                    break;
+                case 'Movie':
+                case 'Lifestyle':
+                case 'News':
+                case 'Sports':
+                    searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchOption + ' ' + searchQuery)}`;
+                    break;
+                default:
+                    searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+            }
+
+            window.open(searchUrl, '_blank');
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                searchAndRedirect();
+            }
+        }
+
+        function toggleDropdown() {
+            document.getElementById("dropdownContent").classList.toggle("show");
+        }
+
+        function selectOption(option) {
+            document.querySelector('.dropbtn').textContent = option;
+            toggleDropdown();
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
